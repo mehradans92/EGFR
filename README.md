@@ -55,7 +55,7 @@ See [this notebook](CV.ipynb) for more details.
 ## Methods
 
 ### Model Architecture
-<img src="https://github.com/mehradans92/EGFR/assets/51170839/019aacc3-fcbb-4a24-8e96-7fd17c064a46" alt="model_architecture" width="1100"/>
+<img src="https://github.com/mehradans92/EGFR/assets/51170839/24668171-8a33-4c1a-88f1-bcb7e3e98964" alt="model_architecture" width="1100"/>
 
 ```
 Model: "Bi-LSTM"
@@ -119,10 +119,8 @@ By none-variant, I mean descriptors that had zero values or zero variance for al
 This was done by adjusting the number of features from 10 to 300 with increments of 10 and finding the number of optimal features that results the highest test AUROC by the classifier.
 See [this notebook](mordred_feature_selection.ipynb) for more details.
 
-<img src="https://github.com/mehradans92/EGFR/assets/51170839/30a02b4b-31b0-4369-9d2d-3d38cebf74af" alt="Pearson" width="1100"/>
+<img src="https://github.com/mehradans92/EGFR/assets/51170839/0eeb9a05-1f2f-4e3d-ba5b-3873b3cbbe58" alt="Pearson" width="1100"/>
 
 Test AUROC had a non-monotonic behavior when tthe number of features were increased. Total number of 60 mordred features were selected and their indices are stored [here](https://github.com/mehradans92/EGFR/blob/main/saved_results/non_zero_std_cols_mordred_indices.json).
 
-![RFE_Mordred_features](https://github.com/mehradans92/EGFR/assets/51170839/260abacd-3ff8-4cd7-99c5-74b5f539b1a9)
-
-
+![RFE_Mordred_features](https://github.com/mehradans92/EGFR/assets/51170839/5a825b92-51c7-4dd2-a75b-9be914e20953)

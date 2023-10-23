@@ -30,11 +30,13 @@ Task: Classifying the potency value (pIC50) for novel compounds targeting Epider
 Baseline model: Logistic Regression
 
 Designed model: Recurrent Neural Network
- 
+
+See [this notebook](main.ipynb) for more deatails.
 
 ### Results Summary
 
 #### 5-fold Cross Validation Performance Benchmarking
+See [this notebook](CV.ipynb) for more deatails.
 
 | Model                             | Features                       | Accuracy    | AUROC           | F1 score     |
 |-----------------------------------|--------------------------------|-------------|---------------|--------------  |
@@ -114,7 +116,7 @@ ________________________________________________________________________________
 
 Variant Mordred descriptors were selected via recursive feature elimination (RFE) cross-validation using a Random forests classifier.
 This was done by adjusting the number of features from 10 to 300 with increments of 10 and finding the the number of optimal features that results the highest test AUROC by the classifier.
-See [this notebook](https://mehradans92.github.io/img/resume.pdf) for more deatails.
+See [this notebook](mordred_feature_selection.ipynb) for more deatails.
 
 <img src="https://github.com/mehradans92/EGFR/assets/51170839/30a02b4b-31b0-4369-9d2d-3d38cebf74af" alt="Pearson" width="1100"/>
 

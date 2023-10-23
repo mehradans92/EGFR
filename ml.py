@@ -142,7 +142,6 @@ class RNNModel(tf.keras.Model):
         return {
             "config": self.config,
             "input_shapes": self.input_shapes,
-            "output_bias": self.output_bias,
         }
 
     def save(self, weights_path, config_path):

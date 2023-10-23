@@ -25,25 +25,25 @@ EGFR_potency_probability = loaded_model.predict(X_test_input)
 
 ## Summary
 
-Task: Classifying the potency value (pIC50) for novel compounds targeting Epidermal Growth Factor Receptor (EGFR) kinase. If -log(IC50) > 8, compund is considered active, otherwise inactive. Where, IC50 represents the compound/substance concentration required for 50% inhibition. Dataset is imalanced (negative:positive ~4.2). Adding `bias regularizer` to the final layer, or over sampling the minority class did not change the performance much.
+Task: Classifying the potency value (pIC50) for novel compounds targeting Epidermal Growth Factor Receptor (EGFR) kinase. If -log(IC50) > 8, compound is considered active, otherwise inactive. Where, IC50 represents the compound/substance concentration required for 50% inhibition. Dataset is imbalanced (negative: positive  ~4.2). Adding `bias regularizer` to the final layer, or over sampling the minority class did not change the performance much.
 
 Baseline model: Logistic Regression
 
 Designed model: Recurrent Neural Network
 
-See [this notebook](main.ipynb) for more deatails.
+See [this notebook](main.ipynb) for more details.
 
 ### Results Summary
 
 #### 5-fold Cross Validation Performance Benchmarking
-See [this notebook](CV.ipynb) for more deatails.
+See [this notebook](CV.ipynb) for more details.
 
 | Model                             | Features                       | Accuracy    | AUROC           | F1 score     |
 |-----------------------------------|--------------------------------|-------------|---------------|--------------  |
 | SVM (baseline)                    | ECFP-4                         | 0.81 ± 0.01 | 0.82 ± 0.02   | 0.59 ± 0.01    |
 | RNN (Bi-LSTM)                     | Smiles, ECFP-4, Mordred        | 0.86 ± 0.01 | 0.89 ± 0.01   | 0.10 ± 0.03    |
 
-#### 5-fold Cross Validation Ablational Analysis
+#### 5-fold Cross Validation Ablation Study
 
 | Model                             | Features                       | Accuracy    | AUROC           | F1 score     |
 |-----------------------------------|--------------------------------|-------------|---------------|--------------|
@@ -115,8 +115,8 @@ ________________________________________________________________________________
 ### Mordred Feature Selection
 
 Variant Mordred descriptors were selected via recursive feature elimination (RFE) cross-validation using a Random forests classifier.
-This was done by adjusting the number of features from 10 to 300 with increments of 10 and finding the the number of optimal features that results the highest test AUROC by the classifier.
-See [this notebook](mordred_feature_selection.ipynb) for more deatails.
+This was done by adjusting the number of features from 10 to 300 with increments of 10 and finding the number of optimal features that results the highest test AUROC by the classifier.
+See [this notebook](mordred_feature_selection.ipynb) for more details.
 
 <img src="https://github.com/mehradans92/EGFR/assets/51170839/30a02b4b-31b0-4369-9d2d-3d38cebf74af" alt="Pearson" width="1100"/>
 

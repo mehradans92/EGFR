@@ -29,7 +29,7 @@ Task: Classifying the potency value (pIC50) for novel compounds targeting Epider
 
 Baseline model: Support Vector Machine
 
-Designed model: Recurrent Neural Network
+Designed model: Recurrent Neural Network with Bi-directional LSTMs units
 
 See [this notebook](main.ipynb) for more details.
 

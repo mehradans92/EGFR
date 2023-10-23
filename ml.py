@@ -57,6 +57,7 @@ class RNNModel(tf.keras.Model):
         x = tf.keras.layers.Dense(
             self.config.hidden_dim,
             kernel_regularizer=tf.keras.regularizers.l2(self.config.reg_strength),
+            activation="tanh",
         )(x)
         x = tf.keras.layers.LayerNormalization()(x)
         x = tf.keras.layers.Dropout(self.config.drop_rate)(x)
@@ -70,6 +71,7 @@ class RNNModel(tf.keras.Model):
         x = tf.keras.layers.Dense(
             self.config.hidden_dim // 4,
             kernel_regularizer=tf.keras.regularizers.l2(self.config.reg_strength),
+            activation="tanh",
         )(x)
         x = tf.keras.layers.LayerNormalization()(x)
         x = tf.keras.layers.Dropout(self.config.drop_rate)(x)

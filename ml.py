@@ -130,6 +130,10 @@ class RNNModel(tf.keras.Model):
         """Evaluate the model on the test data."""
         return self.model.evaluate(x, y, **kwargs)
 
+    def predict(self, x):
+        """Evaluate the model on the test data."""
+        return self.model.predict(x)
+
     def summary(self):
         """Prints a summary the architecture and keras model paramteres."""
         self.model.summary()

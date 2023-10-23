@@ -121,3 +121,8 @@ See [this notebook](mordred_feature_selection.ipynb) for more details.
 
 <img src="https://github.com/mehradans92/EGFR/assets/51170839/30a02b4b-31b0-4369-9d2d-3d38cebf74af" alt="Pearson" width="1100"/>
 
+Test AUROC had a non-monotonic behavior when tthe number of features were increased. Total number of 60 mordred features were selected and their indices are stored [here](https://github.com/mehradans92/EGFR/blob/main/saved_results/non_zero_std_cols_mordred_indices.json).
+
+![RFE_Mordred_features](https://github.com/mehradans92/EGFR/assets/51170839/260abacd-3ff8-4cd7-99c5-74b5f539b1a9)
+
+

@@ -41,7 +41,7 @@ See [this notebook](CV.ipynb) for more details.
 | Model                             | Features                       | Accuracy    | AUROC           | F1 score     |
 |-----------------------------------|--------------------------------|-------------|---------------|--------------  |
 | SVM (baseline)                    | ECFP-4                         | 0.81 ± 0.01 | 0.82 ± 0.02   | 0.59 ± 0.01    |
-| RNN (Bi-LSTM)                     | Smiles, ECFP-4, Mordred        | 0.86 ± 0.01 | 0.89 ± 0.01   | 0.10 ± 0.03    |
+| RNN (Bi-LSTM)                     | Smiles, ECFP-4, Mordred        | 0.86 ± 0.01 | 0.89 ± 0.01   | 0.60 ± 0.02    |
 
 #### 5-fold Cross Validation Ablation Study
 

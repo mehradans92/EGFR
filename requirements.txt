@@ -1,0 +1,10 @@
+tensorflow
+pandas
+scikit-learn
+rdkit
+matplotlib
+datamol
+molfeat
+imbalanced-learn
+molfeat
+seaborn

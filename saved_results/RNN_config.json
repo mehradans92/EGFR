@@ -1,0 +1,19 @@
+{
+    "config": {
+        "vocab_size": 59,
+        "batch_size": 64,
+        "rnn_units": 16,
+        "hidden_dim": 32,
+        "embedding_dim": 8,
+        "reg_strength": 0.001,
+        "lr": 0.001,
+        "drop_rate": 0.2,
+        "epochs": 100,
+        "early_stopping_patience": 5
+    },
+    "input_shapes": [
+        87,
+        1024,
+        60
+    ]
+}

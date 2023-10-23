@@ -25,7 +25,7 @@ EGFR_potency_probability = loaded_model.predict(X_test_input)
 
 ## Summary
 
-Task: Classifying the potency value (pIC50) for novel compounds targeting Epidermal Growth Factor Receptor (EGFR) kinase. If -log(IC50) > 8, compound is considered active (y=1), otherwise inactive (y=0). Where, IC50 represents the compound/substance concentration required for 50% inhibition. The [dataset](https://raw.githubusercontent.com/volkamerlab/teachopencadd/master/teachopencadd/talktorials/T002_compound_adme/data/EGFR_compounds_lipinski.csv) is imbalanced (negative: positive  ~4.2), and total number of compounds is 4635. Adding `bias regularizer` to the final layer, or over sampling the minority class did not change the performance much.
+Task: Classifying the potency value (pIC50) for novel compounds targeting Epidermal Growth Factor Receptor (EGFR) kinase. If -log(IC50) > 8, compound is considered active (y=1), otherwise inactive (y=0). Where IC50 represents the compound/substance concentration required for 50% inhibition. The [dataset](https://raw.githubusercontent.com/volkamerlab/teachopencadd/master/teachopencadd/talktorials/T002_compound_adme/data/EGFR_compounds_lipinski.csv) is imbalanced (negative: positive  ~4.2), and total number of compounds is 4635. Adding `bias regularizer` to the final layer, or over sampling the minority class did not change the performance much.
 
 Baseline model: Support Vector Machine
 
@@ -116,11 +116,11 @@ ________________________________________________________________________________
 
 Variant Mordred descriptors were selected via recursive feature elimination (RFE) cross-validation using a random forests classifier.
 By none-variant, I mean descriptors that had zero values or zero variance for all compounds were removed.
-This was done by adjusting the number of features from 10 to 300 with increments of 10 and finding the number of optimal features that results the highest test AUROC by the classifier.
+This RFE was done by adjusting the number of features from 10 to 300 with increments of 10, and finding the number of optimal features that result the highest test AUROC by the classifier.
 See [this notebook](mordred_feature_selection.ipynb) for more details.
 
 <img src="https://github.com/mehradans92/EGFR/assets/51170839/0eeb9a05-1f2f-4e3d-ba5b-3873b3cbbe58" alt="Pearson" width="1100"/>
 
-Test AUROC had a non-monotonic behavior when tthe number of features were increased. Total number of 60 mordred features were selected and their indices are stored [here](https://github.com/mehradans92/EGFR/blob/main/saved_results/non_zero_std_cols_mordred_indices.json).
+Test AUROC had a non-monotonic behavior when the number of features were increased. Total number of 60 mordred features were selected and their indices are stored [here](https://github.com/mehradans92/EGFR/blob/main/saved_results/non_zero_std_cols_mordred_indices.json).
 
 ![RFE_Mordred_features](https://github.com/mehradans92/EGFR/assets/51170839/5a825b92-51c7-4dd2-a75b-9be914e20953)

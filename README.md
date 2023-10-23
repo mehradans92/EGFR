@@ -25,7 +25,7 @@ EGFR_potency_probability = loaded_model.predict(X_test_input)
 
 ## Summary
 
-Task: Classifying the potency value (pIC50) for novel compounds targeting Epidermal Growth Factor Receptor (EGFR) kinase. [this notebook](main.ipynb). If -log(IC50) > 8, compound is considered active (y=1), otherwise inactive (y=0). Where, IC50 represents the compound/substance concentration required for 50% inhibition. Dataset is imbalanced (negative: positive  ~4.2). Adding `bias regularizer` to the final layer, or over sampling the minority class did not change the performance much.
+Task: Classifying the potency value (pIC50) for novel compounds targeting Epidermal Growth Factor Receptor (EGFR) kinase. [this notebook](main.ipynb). If -log(IC50) > 8, compound is considered active (y=1), otherwise inactive (y=0). Where, IC50 represents the compound/substance concentration required for 50% inhibition. Dataset is imbalanced (negative: positive  ~4.2), and total number of compounds is 4635. Adding `bias regularizer` to the final layer, or over sampling the minority class did not change the performance much.
 
 Baseline model: Logistic Regression
 
@@ -115,6 +115,7 @@ ________________________________________________________________________________
 ### Mordred Feature Selection
 
 Variant Mordred descriptors were selected via recursive feature elimination (RFE) cross-validation using a Random forests classifier.
+By none-variant, I mean descriptors that had zero values or zero variance for all compounds were removed.
 This was done by adjusting the number of features from 10 to 300 with increments of 10 and finding the number of optimal features that results the highest test AUROC by the classifier.
 See [this notebook](mordred_feature_selection.ipynb) for more details.
 

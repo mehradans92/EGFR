@@ -1,5 +1,28 @@
 # EGFR
 
+## Quick Start
+
+```bash
+git clone https://github.com/mehradans92/EGFR.git && cd EGFR
+conda create --name valance python=3.9
+conda activate valance
+pip install - r requirements.txt
+```
+
+
+```python
+from utils import get_features
+from ml import RNNModel
+
+test_smiles = 'C=CC(=O)Nc1ccc2ncnc(Nc3cc(F)c(Cl)c(Cl)c3)c2c1'
+X_test_input = get_features(test_smiles)
+
+loaded_model = RNNModel.load('saved_results/RNN_weights.h5', 'saved_results/RNN_config.json')
+loaded_model.compile()
+EGFR_potency_probability = loaded_model.predict(X_test_input)
+
+```
+
 ## Summary
 
 Task: Classifying the potency value (pIC50) for novel compounds targeting Epidermal Growth Factor Receptor (EGFR) kinase. If -log(IC50) > 8, compund is considered active, otherwise inactive. Where, IC50 represents the compound/substance concentration required for 50% inhibition. Dataset is imalanced (negative:positive ~4.2). Adding `bias regularizer` to the final layer, or over sampling the minority class did not change the performance much.
@@ -91,28 +114,7 @@ ________________________________________________________________________________
 
 Variant Mordred descriptors were selected via recursive feature elimination (RFE) cross-validation using a Random forests classifier.
 This was done by adjusting the number of features from 10 to 300 with increments of 10 and finding the the number of optimal features that results the highest test AUROC by the classifier.
+See [this notebook](https://mehradans92.github.io/img/resume.pdf) for more deatails.
 
 <img src="https://github.com/mehradans92/EGFR/assets/51170839/30a02b4b-31b0-4369-9d2d-3d38cebf74af" alt="Pearson" width="1100"/>
 
-## Quick Start
-
-```bash
-git clone https://github.com/mehradans92/EGFR.git && cd EGFR
-conda create --name valance python=3.9
-conda activate valance
-pip install - r requirements.txt
-```
-
-
-```python
-from utils import get_features
-from ml import RNNModel
-
-test_smiles = 'C=CC(=O)Nc1ccc2ncnc(Nc3cc(F)c(Cl)c(Cl)c3)c2c1'
-X_test_input = get_features(test_smiles)
-
-loaded_model = RNNModel.load('saved_results/RNN_weights.h5', 'saved_results/RNN_config.json')
-loaded_model.compile()
-EGFR_potency_probability = loaded_model.predict(X_test_input)
-
-```

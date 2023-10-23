@@ -114,7 +114,7 @@ ________________________________________________________________________________
 
 ### Mordred Feature Selection
 
-Variant Mordred descriptors were selected via recursive feature elimination (RFE) cross-validation using a Random forests classifier.
+Variant Mordred descriptors were selected via recursive feature elimination (RFE) cross-validation using a random forests classifier.
 By none-variant, I mean descriptors that had zero values or zero variance for all compounds were removed.
 This was done by adjusting the number of features from 10 to 300 with increments of 10 and finding the number of optimal features that results the highest test AUROC by the classifier.
 See [this notebook](mordred_feature_selection.ipynb) for more details.

@@ -25,7 +25,7 @@ EGFR_potency_probability = loaded_model.predict(X_test_input)
 
 ## Summary
 
-Task: Classifying the potency value (pIC50) for novel compounds targeting Epidermal Growth Factor Receptor (EGFR) kinase. If -log(IC50) > 8, compound is considered active, otherwise inactive. Where, IC50 represents the compound/substance concentration required for 50% inhibition. Dataset is imbalanced (negative: positive  ~4.2). Adding `bias regularizer` to the final layer, or over sampling the minority class did not change the performance much.
+Task: Classifying the potency value (pIC50) for novel compounds targeting Epidermal Growth Factor Receptor (EGFR) kinase. [this notebook](main.ipynb). If -log(IC50) > 8, compound is considered active (y=1), otherwise inactive (y=0). Where, IC50 represents the compound/substance concentration required for 50% inhibition. Dataset is imbalanced (negative: positive  ~4.2). Adding `bias regularizer` to the final layer, or over sampling the minority class did not change the performance much.
 
 Baseline model: Logistic Regression
 

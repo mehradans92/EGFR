@@ -10,6 +10,7 @@ from tqdm import tqdm
 import pandas as pd
 import selfies as sf
 import numpy as np
+import json
 from sklearn import clone, metrics
 
 import ml
@@ -61,7 +62,7 @@ def smiles_to_descriptors(smiles, type=None):
     mol = Chem.MolFromSmiles(smiles)
     if type == "mordred":
         # Create Calculator for mordred features
-        transformer = MoleculeTransformer(featurizer="mordred", dtype=float)
+        transformer = MoleculeTransformer(featurizer="mordred", dtype=float, n_jobs=8)
         desc = transformer(mol)
     elif type == "maccs":
         desc = np.array(MACCSkeys.GenMACCSKeys(mol))
@@ -229,7 +230,7 @@ def base_model_crossvalidation(
     ml_model, df, X_columns, y_columns, n_folds=5, verbose=False, SEED=None
 ):
     """
-    Machine learning model training and validation in a cross-validation loop.
+    Cross validation wrapper for the baseline model
 
     Parameters
     ----------
@@ -279,6 +280,148 @@ def base_model_crossvalidation(
 
         # Performance for each fold
         accuracy, auc, f1 = model_performance(fold_model, test_x, test_y, verbose)
+
+        # Save results
+        acc_per_fold.append(accuracy)
+        auc_per_fold.append(auc)
+        f1_per_fold.append(f1)
+
+    # Print statistics of results
+    print(
+        f"ACC:\t {np.mean(acc_per_fold):.2f}"
+        f" ± {np.std(acc_per_fold):.2f} \n"
+        f"AUC:\t {np.mean(auc_per_fold):.2f}"
+        f" ± {np.std(auc_per_fold):.2f} \n"
+        f"F1:\t {np.mean(f1_per_fold):.2f}"
+        f" ± {np.std(f1_per_fold):.2f} \n"
+    )
+    results_dict = {
+        "ACC": {
+            "mean": f"{np.mean(acc_per_fold):.3g}",
+            "std": f"{np.std(acc_per_fold):.3g}",
+        },
+        "AUC": {
+            "mean": f"{np.mean(auc_per_fold):.3g}",
+            "std": f"{np.std(auc_per_fold):.3g}",
+        },
+        "F1": {
+            "mean": f"{np.mean(f1_per_fold):.3g}",
+            "std": f"{np.std(f1_per_fold):.3g}",
+        },
+    }
+    return results_dict
+
+
+def get_features(s):
+    """gets features from a smiles string s"""
+    fingerprints = smiles_to_descriptors(s, type="morgan2")
+    mordreds = smiles_to_descriptors(s, type="mordred")
+    selfies = smiles_to_descriptors(s, type="selfies")
+
+    with open("saved_results/non_zero_std_cols_mordred_indices.json", "r") as f:
+        mordred_indices_dict = json.load(f)
+
+    non_zero_std_cols = mordred_indices_dict["non_zero_std_cols"]
+    optimal_mordred_features_indices = mordred_indices_dict[
+        "optimal_mordred_features_indices"
+    ]
+    mordreds_non_nan = mordreds[:, non_zero_std_cols]
+    mordreds_non_zero_std = mordreds_non_nan[:, optimal_mordred_features_indices]
+
+    with open("saved_results/selfies_voc.json", "r") as f:
+        voc = json.load(f)
+    selfies_encoding = selfies_to_encoding(selfies, vocab_stoi=voc, pad_to_len=87)
+    X_input_test = [
+        np.array([selfies_encoding]),
+        np.array([fingerprints]),
+        mordreds_non_zero_std,
+    ]
+    return X_input_test
+
+
+def RNN_model_crossvalidation(
+    df,
+    lstm_config,
+    n_folds=5,
+    verbose=False,
+    optimal_mordred_features_indices=None,
+    add_finger_print=False,
+    add_mordred=False,
+    SEED=None,
+):
+    """
+    Cross validation warapper for RNN model
+
+    """
+    # Shuffle the indices for the k-fold cross-validation
+    kf = KFold(n_splits=n_folds, shuffle=True, random_state=SEED)
+
+    # input_shapes = None
+
+    # Results for each of the cross-validation folds
+    acc_per_fold = []
+    f1_per_fold = []
+    auc_per_fold = []
+
+    # Loop over the folds
+    for train_index, test_index in tqdm(kf.split(df)):
+        # Training
+
+        mordred_features = np.vstack(df["mordred"])
+        X_encoding = np.vstack(df["selfies encoding"])
+        X_fingerprint = np.vstack(df["finger print"])
+        X_mordred = mordred_features[:, optimal_mordred_features_indices]
+        X = np.concatenate([X_encoding, X_fingerprint, X_mordred], axis=1)
+        y = np.vstack(df["active"])
+
+        X_train = X[train_index]
+        X_test = X[test_index]
+        y_train = y[train_index]
+        y_test = y[test_index]
+
+        splits = [X_train, X_test, y_train, y_test]
+
+        if add_finger_print:
+            input_shapes = [X_encoding.shape[1], X_fingerprint.shape[1]]
+            outputs = prepare_RNN_data(X_train, X_test, X_test, input_shapes)
+            X_train_encoding, X_val_encoding, X_test_encoding = outputs[0]
+            X_train_fingerprint, X_val_fingerprint, X_test_fingerprint = outputs[1]
+            X_train_input = [X_train_encoding, X_train_fingerprint]
+            X_test_input = [X_test_encoding, X_test_fingerprint]
+
+        if add_mordred:
+            input_shapes = [
+                X_encoding.shape[1],
+                X_fingerprint.shape[1],
+                X_mordred.shape[1],
+            ]
+            outputs = prepare_RNN_data(
+                X_train, X_test, X_test, input_shapes, scale_descriptors=True
+            )
+            X_train_encoding, X_val_encoding, X_test_encoding = outputs[0]
+            X_train_fingerprint, X_val_fingerprint, X_test_fingerprint = outputs[1]
+            X_train_descriptor, X_val_descriptor, X_test_descriptor = outputs[2]
+            X_train_input = [X_train_encoding, X_train_fingerprint, X_train_descriptor]
+            X_test_input = [X_test_encoding, X_test_fingerprint, X_test_descriptor]
+
+        if not add_finger_print and not add_mordred:
+            input_shapes = [X_encoding.shape[1]]
+            outputs = prepare_RNN_data(X_train, X_test, X_test, input_shapes)
+            X_train_encoding, X_val_encoding, X_test_encoding = outputs[0]
+            X_train_input = [X_train_encoding]
+            X_test_input = [X_test_encoding]
+
+        rnn_model = ml.RNNModel(lstm_config, input_shapes)
+        result = rnn_model.train(
+            X_train_input,
+            y_train,
+            validation_data=(X_test_input, y_test),
+            verbose=verbose,
+        )
+
+        # Performance for each fold
+        loss, accuracy, auc, f1 = rnn_model.evaluate(X_test_input, y_test)
+        f1 = f1[0]
 
         # Save results
         acc_per_fold.append(accuracy)

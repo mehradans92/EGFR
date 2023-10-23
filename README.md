@@ -105,10 +105,14 @@ pip install - r requirements.txt
 
 
 ```python
-
+from utils import get_features
 from ml import RNNModel
+
+test_smiles = 'C=CC(=O)Nc1ccc2ncnc(Nc3cc(F)c(Cl)c(Cl)c3)c2c1'
+X_test_input = get_features(test_smiles)
+
 loaded_model = RNNModel.load('saved_results/RNN_weights.h5', 'saved_results/RNN_config.json')
 loaded_model.compile()
-loss, accuracy, auc, f1 = loaded_model.evaluate(X_test_input, y_test)
+EGFR_potency_probability = loaded_model.predict(X_test_input)
 
 ```

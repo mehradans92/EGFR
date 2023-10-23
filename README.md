@@ -13,14 +13,14 @@ Designed model: Recurrent Neural Network
 
 #### 5-fold Cross Validation Performance Benchmarking
 
-| Model                             | Features                       | Accuracy    | AUC           | F1 score     |
+| Model                             | Features                       | Accuracy    | AUROC           | F1 score     |
 |-----------------------------------|--------------------------------|-------------|---------------|--------------|
 | Baseline (logistic regression)    | ECFP-4                         | 0.85 ± 0.01 | 0.88 ± 0.01  | 0.59 ± 0.01   |
 | RNN (Bi-LSTM)                     | Smiles, ECFP-4, Mordred        | 0.86 ± 0.01 | 0.89 ± 0.01  | 0.60 ± 0.02   |
 
 #### 5-fold Cross Validation Ablational Analysis
 
-| Model                             | Features                       | Accuracy    | AUC           | F1 score     |
+| Model                             | Features                       | Accuracy    | AUROC           | F1 score     |
 |-----------------------------------|--------------------------------|-------------|---------------|--------------|
 | RNN (Bi-LSTM)                     | Smiles                         | 0.81 ± 0.01 | 0.80 ± 0.01  | 0.30 ± 0.16   |
 | RNN (Bi-LSTM)                     | Smiles, ECFP-4                 | 0.85 ± 0.01 | 0.89 ± 0.01  | 0.59 ± 0.03   |
@@ -90,7 +90,7 @@ ________________________________________________________________________________
 ### Mordred Feature Selection
 
 Variant Mordred descriptors were selected via recursive feature elimination (RFE) cross-validation using a Random forests classifier.
-This was done by adjusting the number of features from 10 to 300 with increments of 10 and finding the highest test accuracy by the classifier.
+This was done by adjusting the number of features from 10 to 300 with increments of 10 and finding the the number of features resulting the highest test AUROC by the classifier.
 
 <img src="https://github.com/mehradans92/EGFR/assets/51170839/30a02b4b-31b0-4369-9d2d-3d38cebf74af" alt="Pearson" width="1100"/>
 

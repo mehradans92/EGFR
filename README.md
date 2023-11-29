@@ -4,8 +4,8 @@
 
 ```bash
 git clone https://github.com/mehradans92/EGFR.git && cd EGFR
-conda create --name valance python=3.9
-conda activate valance
+conda create --name EGFR python=3.9
+conda activate EGFR
 pip install -r requirements.txt
 ```
 
